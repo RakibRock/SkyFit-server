@@ -43,48 +43,52 @@ async function run() {
       res.send(result);
     });
     //GET request to get the data of a single product
-    app.get(
-      "/products/:id",
-      async (req, res) => {
-        const id = req.params.id;
-        const query = { _id: ObjectId(id) };
-        const product = await productsCollection.findOne(query);
-        console.log("product with id", id);
-        res.send(product);
-      }
+    app.get("/products/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const product = await productsCollection.findOne(query);
+      console.log("product with id", id);
+      res.send(product);
+    });
+    //POST for myorders
+    app.post("/orders", async (req, res) => {
+      const order = req.body;
+      const result = await ordersCollection.insertOne(order);
+      console.log(result);
+      res.json(result);
+    });
 
-      //   const user =
-      //   console.log(req.params.id);
-      // });
+    //   const user =
+    //   console.log(req.params.id);
+    // });
 
-      //GET individual product
-      // app.get("/products/:id", async (req, res) => {
-      //   const cursor = productsCollection.findOne({});
-      //   const result = await cursor.toArray();
-      //   res.send(result);
-      //   console.log(result);
-      // });
+    //GET individual product
+    // app.get("/products/:id", async (req, res) => {
+    //   const cursor = productsCollection.findOne({});
+    //   const result = await cursor.toArray();
+    //   res.send(result);
+    //   console.log(result);
+    // });
 
-      //POST appointment details
-      // app.post("/orders", async (req, res) => {
-      //   const order = req.body;
-      //   const result = await ordersCollection.insertOne(order);
-      //   console.log(result);
-      //   res.json(result);
-      // });
+    //POST order details
+    // app.post("/orders", async (req, res) => {
+    //   const order = req.body;
+    //   const result = await ordersCollection.insertOne(order);
+    //   console.log(result);
+    //   res.json(result);
+    // });
 
-      //GET to show the appointments booked by user
-      // app.get("/appointment", async (req, res) => {
-      //   const email = req.query.email;
-      //   const date = new Date(req.query.date).toLocaleDateString();
-      //   console.log(date);
-      //   console.log(email);
-      //   const query = { email: email, date: date };
-      //   const cursor = appointments.find(query);
-      //   const result = await cursor.toArray();
-      //   res.json(result);
-      // });
-    );
+    //GET to show the appointments booked by user
+    // app.get("/appointment", async (req, res) => {
+    //   const email = req.query.email;
+    //   const date = new Date(req.query.date).toLocaleDateString();
+    //   console.log(date);
+    //   console.log(email);
+    //   const query = { email: email, date: date };
+    //   const cursor = appointments.find(query);
+    //   const result = await cursor.toArray();
+    //   res.json(result);
+    // });
   } finally {
     // Ensures that the client will close when you finish/error
     //   await client.close();
