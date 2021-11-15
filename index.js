@@ -84,6 +84,17 @@ async function run() {
       res.json(result);
     });
 
+    app.get("/users/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const user = await usersCollection.findOne(query);
+      let isAdmin = false;
+      if (user?.role === "admin") {
+        isAdmin = true;
+      }
+      res.json({ admin: isAdmin });
+    });
+
     //GET to show review on the website
     app.get("/reviews", async (req, res) => {
       const cursor = reviewsCollection.find({});
@@ -100,12 +111,14 @@ async function run() {
     });
 
     //PUT admin
-    // app.put("/admin", async (req, res) => {
-    //   const user = req.body;
-    //   const filter = { email: user.email };
-    //   const updateDoc = { $set: { role: "admin" } };
-    //   const result = await
-    // });
+    app.put("/users/admin", async (req, res) => {
+      const user = req.body;
+      console.log("put", user);
+      const filter = { email: user.email };
+      const updateDoc = { $set: { role: "admin" } };
+      const result = await usersCollection.updateOne(filter, updateDoc);
+      res.json(result);
+    });
 
     //   const user =
     //   console.log(req.params.id);
