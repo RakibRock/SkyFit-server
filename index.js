@@ -24,7 +24,7 @@ async function run() {
     const productsCollection = database.collection("productsCollection");
     const ordersCollection = database.collection("ordersCollection");
     const reviewsCollection = database.collection("reviewsCollection");
-    const sixProductsCollection = database.collection("sixProductsCollection");
+    const usersCollection = database.collection("users");
 
     //GET API- WE WANT TO GET THE DATA FROM THE DATABASE (products)
     //Home
@@ -77,6 +77,13 @@ async function run() {
       res.json(result);
     });
 
+    //POST to send users to db
+    app.post("/users", async (req, res) => {
+      const user = req.body;
+      const result = await usersCollection.insertOne(user);
+      res.json(result);
+    });
+
     //GET to show review on the website
     app.get("/reviews", async (req, res) => {
       const cursor = reviewsCollection.find({});
@@ -91,6 +98,14 @@ async function run() {
       console.log(result);
       res.json(result);
     });
+
+    //PUT admin
+    // app.put("/admin", async (req, res) => {
+    //   const user = req.body;
+    //   const filter = { email: user.email };
+    //   const updateDoc = { $set: { role: "admin" } };
+    //   const result = await
+    // });
 
     //   const user =
     //   console.log(req.params.id);
