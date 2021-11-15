@@ -50,6 +50,40 @@ async function run() {
       console.log("product with id", id);
       res.send(product);
     });
+
+    //GET to diplay orders
+    app.get("/orders", async (req, res) => {
+      const email = req.query.email;
+      const query = { email: email };
+      const orders = ordersCollection.find(query);
+      const result = await orders.toArray();
+      res.json(result);
+    });
+
+    //DELETE order
+    app.delete("/orders/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await ordersCollection.deleteOne(query);
+      res.json(result);
+    });
+
+    //POST to send reviews to db
+    app.post("/reviews", async (req, res) => {
+      const review = req.body;
+      const result = await reviewsCollection.insertOne(review);
+      console.log(result);
+      console.log(review);
+      res.json(result);
+    });
+
+    //GET to show review on the website
+    app.get("/reviews", async (req, res) => {
+      const cursor = reviewsCollection.find({});
+      const reviews = await cursor.toArray();
+      res.json(reviews);
+    });
+
     //POST for myorders
     app.post("/orders", async (req, res) => {
       const order = req.body;
